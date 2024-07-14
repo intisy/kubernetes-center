@@ -4,15 +4,15 @@ action=install
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --action=*)
+    action=*)
       action="${1#*=}"
       shift
       ;;
-    --args=*)
+    args=*)
       args="${1#*=}"
       shift
       ;;
-    --repo=*)
+    repo=*)
       repo="${1#*=}"
       shift
       ;;
