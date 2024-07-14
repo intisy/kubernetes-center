@@ -42,6 +42,7 @@ execute() {
       curl -fsSL $url | bash -s $sha $args
     fi
   else
+    echo "Error: $output"
     sleep 1
     execute
   fi
