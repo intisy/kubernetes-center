@@ -2,5 +2,11 @@ Examples
 ---------
 
 ```
-curl -fsSL https://raw.githubusercontent.com/WildePizza/<REPO, eg. mysql-kubernetes, docker-registry, kubernetes-dashboard, ollama-kubernetes>/HEAD/run.sh | bash -s <ACTION, eg. install, unistall>
+curl -fsSL https://raw.githubusercontent.com/WildePizza/kubernetes-center/HEAD/run.sh | bash -s <args>
 ```
+
+| Option | Possible Values |
+|-|:-:|:-:|
+| --action | install, unistall |
+| --args | repo args |
+| --repo | mysql-kubernetes, docker-registry, kubernetes-dashboard, ollama-kubernetes |
