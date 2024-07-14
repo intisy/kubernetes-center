@@ -30,7 +30,7 @@ fi
 
 execute() {
   substring="#!/bin/bash"
-  sha=$(curl -sSL https://api.github.com/repos/WildePizza/kubernetes-center/commits?per_page=2 | jq -r '.[1].sha')
+  sha=$(curl -sSL https://api.github.com/repos/WildePizza/$repo/commits?per_page=2 | jq -r '.[1].sha')
   url="https://raw.githubusercontent.com/WildePizza/$repo/HEAD/.commits/$sha/scripts/$action.sh"
   echo "Running script: $url"
   output=$(curl -fsSL $url 2>&1)
