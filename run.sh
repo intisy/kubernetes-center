@@ -12,6 +12,10 @@ while [[ $# -gt 0 ]]; do
       args="${1#*=}"
       shift
       ;;
+    pat=*)
+      pat="${1#*=}"
+      shift
+      ;;
     repo=*)
       repo="${1#*=}"
       shift
