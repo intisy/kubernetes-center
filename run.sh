@@ -27,8 +27,6 @@ if [ ! -n "$repo" ]; then
   read -p "--repo has to be set"  
   exit
 fi
-repo=$2
-pat=$3
 
 execute() {
   substring="#!/bin/bash"
