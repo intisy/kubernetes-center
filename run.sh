@@ -30,7 +30,11 @@ fi
 
 execute() {
   substring="#!/bin/bash"
-  sha=$(curl -sSL https://api.github.com/repos/WildePizza/$repo/commits?per_page=2 | jq -r '.[1].sha')
+  if [ -n "$pat" ]; then
+    sha=$(curl -X GET -H "Authorization: Bearer $pat" -H "Content-Type: application/json" -fsSL https://api.github.com/repos/WildePizza/$repo/commits?per_page=2 | jq -r '.[1].sha')
+  else
+    sha=$(curl -fsSL https://api.github.com/repos/WildePizza/$repo/commits?per_page=2 | jq -r '.[1].sha')
+  fi
   url="https://raw.githubusercontent.com/WildePizza/$repo/HEAD/.commits/$sha/scripts/$action.sh"
   echo "Running script: $url"
   output=$(curl -fsSL $url 2>&1)
