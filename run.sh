@@ -40,31 +40,31 @@ if [ -n "$repo" ]; then
     echo $element
     case "$element" in
       username=*)
-        username="${1#*=}"
+        username="${element#*=}"
         shift
         ;;
       password=*)
-        password="${1#*=}"
+        password="${element#*=}"
         shift
         ;;
       using_kubernetes=*)
-        using_kubernetes="${1#*=}"
+        using_kubernetes="${element#*=}"
         shift
         ;;
       using_ui=*)
-        using_ui="${1#*=}"
+        using_ui="${element#*=}"
         shift
         ;;
       using_docker_ui_test=*)
-        using_docker_ui_test="${1#*=}"
+        using_docker_ui_test="${element#*=}"
         shift
         ;;
       gererate_password=*)
-        gererate_password="${1#*=}"
+        gererate_password="${element#*=}"
         shift
         ;;
       using_nfs=*)
-        using_nfs="${1#*=}"
+        using_nfs="${element#*=}"
         shift
         ;;
       *)
