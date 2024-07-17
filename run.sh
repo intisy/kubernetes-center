@@ -77,6 +77,7 @@ else
   read -p "--repo has to be set"  
   exit
 fi
+echo $username
 
 execute() {
   substring="#!/bin/bash"
