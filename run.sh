@@ -83,11 +83,11 @@ execute() {
   else
     sha=$(curl -fsSL https://api.github.com/repos/WildePizza/$repo/commits?per_page=2 | jq -r '.[1].sha')
   fi
-  if [ "$repo" = "docker-registry" ]
+  if [ "$repo" = "docker-registry" ]; then
     args="$username $password $using_kubernetes $using_ui $using_docker_ui_test $gererate_password $using_nfs"
-  elif [ "$repo" = "mysql-kubernetes" ]
+  elif [ "$repo" = "mysql-kubernetes" ]; then
     args="$sha $password $using_nfs"
-  elif [ "$repo" = "nfs-kubernetes" ]
+  elif [ "$repo" = "nfs-kubernetes" ]; then
     args=""
   fi
   url="https://raw.githubusercontent.com/WildePizza/$repo/HEAD/.commits/$sha/scripts/$action.sh"
