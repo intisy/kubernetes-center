@@ -35,6 +35,7 @@ done
 
 if [ -n "$repo" ]; then
   while [[ $args -gt 0 ]]; do
+    echo $1
     case "$1" in
       username=*)
         username="${1#*=}"
