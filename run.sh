@@ -37,7 +37,6 @@ if [ -n "$repo" ]; then
   read -a args_array <<< "$args"
   for element in "${args_array[@]}"
   do
-    echo $element
     case "$element" in
       username=*)
         username="${element#*=}"
@@ -77,7 +76,6 @@ else
   read -p "--repo has to be set"  
   exit
 fi
-echo $username
 
 execute() {
   substring="#!/bin/bash"
