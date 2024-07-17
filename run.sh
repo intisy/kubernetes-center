@@ -8,6 +8,7 @@ gererate_password=false
 using_nfs=true
 action=install
 
+echo $#
 while [[ $# -gt 0 ]]; do
   case "$1" in
     action=*)
@@ -35,7 +36,6 @@ done
 
 if [ -n "$repo" ]; then
   while [[ $args -gt 0 ]]; do
-    echo $1
     case "$1" in
       username=*)
         username="${1#*=}"
