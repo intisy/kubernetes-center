@@ -8,7 +8,6 @@ gererate_password=false
 using_nfs=true
 action=install
 
-echo $#
 while [[ $# -gt 0 ]]; do
   case "$1" in
     action=*)
@@ -35,8 +34,11 @@ while [[ $# -gt 0 ]]; do
 done
 
 if [ -n "$repo" ]; then
-  while [[ $args -gt 0 ]]; do
-    case "$1" in
+  read -a args_array <<< "$args"
+  for element in "${args_array[@]}"
+  do
+    echo $element
+    case "$element" in
       username=*)
         username="${1#*=}"
         shift
@@ -66,7 +68,7 @@ if [ -n "$repo" ]; then
         shift
         ;;
       *)
-        echo "Unknown option: $1"
+        echo "Unknown option: $element"
         exit 1
         ;;
     esac
