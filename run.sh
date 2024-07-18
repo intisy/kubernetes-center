@@ -6,6 +6,7 @@ using_ui=true
 using_docker_ui_test=false
 gererate_password=false
 using_nfs=true
+yaml=false
 action=install
 
 while [[ $# -gt 0 ]]; do
@@ -24,6 +25,14 @@ while [[ $# -gt 0 ]]; do
       ;;
     pat=*)
       pat="${1#*=}"
+      shift
+      ;;
+    sha=*)
+      sha="${1#*=}"
+      shift
+      ;;
+    yaml=*)
+      yaml="${1#*=}"
       shift
       ;;
     repo=*)
@@ -77,34 +86,49 @@ if [ -n "$repo" ]; then
     esac
   done
 else
-  read -p "--repo has to be set"  
+  read -p "repo has to be set"  
   exit
 fi
 
 execute() {
   substring="#!/bin/bash"
-  if [ -n "$pat" ]; then
-    sha=$(curl -X GET -H "Authorization: Bearer $pat" -H "Content-Type: application/json" -fsSL https://api.github.com/repos/WildePizza/$repo/commits?per_page=2 | jq -r '.[1].sha')
+  if [ ! -n "$sha" ]; then
+    if [ -n "$pat" ]; then
+      sha=$(curl -X GET -H "Authorization: Bearer $pat" -H "Content-Type: application/json" -fsSL https://api.github.com/repos/WildePizza/$repo/commits | jq -r '.[1].sha')
+    else
+      echo "As of now you have to set the pat or sha, this will be fixed soon"
+      exit 1
+      # sha=$(curl -fsSL https://api.github.com/repos/WildePizza/$repo/commits | jq -r '.[1].sha')
+    fi
+  fi
+  if [ -n "$args" ]; then
+    if [ "$repo" = "docker-registry" ]; then
+      raw_args="$username $password $using_kubernetes $using_ui $using_docker_ui_test $gererate_password $using_nfs"
+    elif [ "$repo" = "mysql-kubernetes" ]; then
+      raw_args="$password $using_nfs"
+    elif [ "$repo" = "nfs-kubernetes" ]; then
+      raw_args=""
+    elif [ "$repo" = "kubernetes-dashboard" ]; then
+      raw_args=""
+    fi
+    raw_args="$sha $pat $raw_args"
+  fi
+  if [ "$yaml" = true ]; then
+    url="https://raw.githubusercontent.com/WildePizza/$sha/yaml/$action.yaml"
   else
-    sha=$(curl -fsSL https://api.github.com/repos/WildePizza/$repo/commits?per_page=2 | jq -r '.[1].sha')
+    url="https://raw.githubusercontent.com/WildePizza/$sha/scripts/$action.sh"
   fi
-  if [ "$repo" = "docker-registry" ]; then
-    raw_args="$username $password $using_kubernetes $using_ui $using_docker_ui_test $gererate_password $using_nfs"
-  elif [ "$repo" = "mysql-kubernetes" ]; then
-    raw_args="$sha $password $using_nfs"
-  elif [ "$repo" = "nfs-kubernetes" ]; then
-    raw_args=""
-  elif [ "$repo" = "kubernetes-dashboard" ]; then
-    raw_args="$sha"
-  fi
-  url="https://raw.githubusercontent.com/WildePizza/$repo/HEAD/.commits/$sha/scripts/$action.sh"
   echo "Running script: $url"
   output=$(curl -fsSL $url 2>&1)
   if [[ $output =~ $substring ]]; then
-    if [ -n "$pat" ]; then
-      curl -X GET -H "Authorization: Bearer $pat" -H "Content-Type: application/json" -fsSL $url | bash -s $raw_args
+    if [ "$yaml" = true ]; then
+      kubectl apply -f $url
     else
-      curl -fsSL $url | bash -s $raw_args
+      if [ -n "$pat" ]; then
+        curl -X GET -H "Authorization: Bearer $pat" -H "Content-Type: application/json" -fsSL $url | bash -s $raw_args
+      else
+        curl -fsSL $url | bash -s $raw_args
+      fi
     fi
   else
     echo "Error: $output"
