@@ -98,7 +98,7 @@ execute() {
   substring="#!/bin/bash"
   if [ ! -n "$sha" ]; then
     if [ -n "$pat" ]; then
-      sha=$(curl -X GET -H "Authorization: Bearer $pat" -H "Content-Type: application/json" -fsSL https://api.github.com/repos/WildePizza/$repo/commits | jq -r '.[1].sha')
+      sha=$(curl -X GET -H "Authorization: Bearer $pat" -H "Content-Type: application/json" -fsSL https://api.github.com/repos/WildePizza/$repo/commits | jq -r '.[0].sha')
       echo2 "Last SHA: $sha"
     else
       echo2 "As of now you have to set the pat or sha, this will be fixed soon"
