@@ -90,6 +90,8 @@ execute() {
     args="$sha $password $using_nfs"
   elif [ "$repo" = "nfs-kubernetes" ]; then
     args=""
+  elif [ "$repo" = "kubernetes-dashboard" ]; then
+    args="$sha"
   fi
   url="https://raw.githubusercontent.com/WildePizza/$repo/HEAD/.commits/$sha/scripts/$action.sh"
   echo "Running script: $url"
