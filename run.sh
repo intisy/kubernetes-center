@@ -18,6 +18,10 @@ while [[ $# -gt 0 ]]; do
       args="${1#*=}"
       shift
       ;;
+    raw_args=*)
+      raw_args="${1#*=}"
+      shift
+      ;;
     pat=*)
       pat="${1#*=}"
       shift
@@ -85,22 +89,22 @@ execute() {
     sha=$(curl -fsSL https://api.github.com/repos/WildePizza/$repo/commits?per_page=2 | jq -r '.[1].sha')
   fi
   if [ "$repo" = "docker-registry" ]; then
-    args="$username $password $using_kubernetes $using_ui $using_docker_ui_test $gererate_password $using_nfs"
+    raw_args="$username $password $using_kubernetes $using_ui $using_docker_ui_test $gererate_password $using_nfs"
   elif [ "$repo" = "mysql-kubernetes" ]; then
-    args="$sha $password $using_nfs"
+    raw_args="$sha $password $using_nfs"
   elif [ "$repo" = "nfs-kubernetes" ]; then
-    args=""
+    raw_args=""
   elif [ "$repo" = "kubernetes-dashboard" ]; then
-    args="$sha"
+    raw_args="$sha"
   fi
   url="https://raw.githubusercontent.com/WildePizza/$repo/HEAD/.commits/$sha/scripts/$action.sh"
   echo "Running script: $url"
   output=$(curl -fsSL $url 2>&1)
   if [[ $output =~ $substring ]]; then
     if [ -n "$pat" ]; then
-      curl -X GET -H "Authorization: Bearer $pat" -H "Content-Type: application/json" -fsSL $url | bash -s $args
+      curl -X GET -H "Authorization: Bearer $pat" -H "Content-Type: application/json" -fsSL $url | bash -s $raw_args
     else
-      curl -fsSL $url | bash -s $args
+      curl -fsSL $url | bash -s $raw_args
     fi
   else
     echo "Error: $output"
