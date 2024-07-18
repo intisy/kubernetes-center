@@ -40,7 +40,7 @@ while [[ $# -gt 0 ]]; do
       shift
       ;;
     *)
-      echo "Unknown option: $1"
+      echo2 "Unknown option: $1"
       exit 1
       ;;
   esac
@@ -80,7 +80,7 @@ if [ -n "$repo" ]; then
         shift
         ;;
       *)
-        echo "Unknown option: $element"
+        echo2 "Unknown option: $element"
         exit 1
         ;;
     esac
@@ -90,13 +90,18 @@ else
   exit
 fi
 
+echo2() {
+  echo -e "\033[0;33m$@\033[0m"
+}
+
 execute() {
   substring="#!/bin/bash"
   if [ ! -n "$sha" ]; then
     if [ -n "$pat" ]; then
       sha=$(curl -X GET -H "Authorization: Bearer $pat" -H "Content-Type: application/json" -fsSL https://api.github.com/repos/WildePizza/$repo/commits | jq -r '.[1].sha')
+      echo2 "Last SHA: $sha"
     else
-      echo "As of now you have to set the pat or sha, this will be fixed soon"
+      echo2 "As of now you have to set the pat or sha, this will be fixed soon"
       exit 1
       # sha=$(curl -fsSL https://api.github.com/repos/WildePizza/$repo/commits | jq -r '.[1].sha')
     fi
@@ -118,7 +123,7 @@ execute() {
   else
     url="https://raw.githubusercontent.com/WildePizza/$repo/$sha/scripts/$action.sh"
   fi
-  echo "Running script: $url"
+  echo2 "Running script: $url"
   output=$(curl -fsSL $url 2>&1)
   if [[ $output =~ $substring ]]; then
     if [ "$yaml" = true ]; then
@@ -131,7 +136,7 @@ execute() {
       fi
     fi
   else
-    echo "Error: $output"
+    echo2 "Error: $output"
     sleep 1
     execute
   fi
