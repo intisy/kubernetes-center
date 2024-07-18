@@ -114,9 +114,9 @@ execute() {
     raw_args="$sha $pat $raw_args"
   fi
   if [ "$yaml" = true ]; then
-    url="https://raw.githubusercontent.com/WildePizza/$sha/yaml/$action.yaml"
+    url="https://raw.githubusercontent.com/WildePizza/$repo/$sha/yaml/$action.yaml"
   else
-    url="https://raw.githubusercontent.com/WildePizza/$sha/scripts/$action.sh"
+    url="https://raw.githubusercontent.com/WildePizza/$repo/$sha/scripts/$action.sh"
   fi
   echo "Running script: $url"
   output=$(curl -fsSL $url 2>&1)
