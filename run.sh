@@ -111,7 +111,7 @@ execute() {
     elif [ "$repo" = "kubernetes-dashboard" ]; then
       raw_args=""
     fi
-    raw_args="$sha $pat $raw_args"
+    raw_args="$pat $sha $raw_args"
   fi
   if [ "$yaml" = true ]; then
     url="https://raw.githubusercontent.com/WildePizza/$repo/$sha/yaml/$action.yaml"
