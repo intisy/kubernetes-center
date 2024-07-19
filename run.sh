@@ -9,6 +9,10 @@ using_nfs=true
 yaml=false
 action=install
 
+echo2() {
+  echo -e "\033[0;33m$@\033[0m"
+}
+
 while [[ $# -gt 0 ]]; do
   case "$1" in
     action=*)
@@ -89,10 +93,6 @@ else
   read -p "repo has to be set"  
   exit
 fi
-
-echo2() {
-  echo -e "\033[0;33m$@\033[0m"
-}
 
 execute() {
   substring="#!/bin/bash"
