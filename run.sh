@@ -120,8 +120,10 @@ execute() {
   fi
   if [ "$yaml" = true ]; then
     url="https://raw.githubusercontent.com/WildePizza/$repo/$sha/yaml/$action.yaml"
+    substring="apiVersion: v1"
   else
     url="https://raw.githubusercontent.com/WildePizza/$repo/$sha/scripts/$action.sh"
+    substring="#!/bin/bash"
   fi
   echo2 "Running script: $url"
   output=$(curl -fsSL $url 2>&1)
