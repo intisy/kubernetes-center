@@ -98,12 +98,12 @@ execute() {
   substring="#!/bin/bash"
   if [ ! -n "$sha" ]; then
     if [ -n "$pat" ]; then
-      sha=$(curl -X GET -H "Authorization: Bearer $pat" -H "Content-Type: application/json" -fsSL https://api.github.com/repos/WildePizza/$repo/commits | jq -r '.[0].sha')
+      sha=$(curl -X GET -H "Authorization: Bearer $pat" -H "Content-Type: application/json" -fsSL https://api.github.com/repos/intisy/$repo/commits | jq -r '.[0].sha')
       echo2 "Last SHA: $sha"
     else
       echo2 "As of now you have to set the pat or sha, this will be fixed soon"
       exit 1
-      # sha=$(curl -fsSL https://api.github.com/repos/WildePizza/$repo/commits | jq -r '.[1].sha')
+      # sha=$(curl -fsSL https://api.github.com/repos/intisy/$repo/commits | jq -r '.[1].sha')
     fi
   fi
   if [ -n "$args" ]; then
@@ -119,10 +119,10 @@ execute() {
     raw_args="$pat $sha $raw_args"
   fi
   if [ "$yaml" = true ]; then
-    url="https://raw.githubusercontent.com/WildePizza/$repo/$sha/yaml/$action.yaml"
+    url="https://raw.githubusercontent.com/intisy/$repo/$sha/yaml/$action.yaml"
     substring="apiVersion: v1"
   else
-    url="https://raw.githubusercontent.com/WildePizza/$repo/$sha/scripts/$action.sh"
+    url="https://raw.githubusercontent.com/intisy/$repo/$sha/scripts/$action.sh"
     substring="#!/bin/bash"
   fi
   echo2 "Running script: $url"
